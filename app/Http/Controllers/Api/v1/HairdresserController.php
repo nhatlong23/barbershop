@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Hairdresser;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class HairdresserController extends Controller
@@ -13,19 +15,25 @@ class HairdresserController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     *
+     * @OA\Get(
+     *   path="/api/v1/hairdresser",
+     *   summary="Get List Hairdresser",
+     *   operationId="getHairdressers",
+     *   tags={"Hairdresser"},
+     *   @OA\Response(response=200, description="successful operation"),
+     *   @OA\Response(response=500, description="An error occurred while Display a listing the hairdresser.")
+     * )
      */
     public function index()
     {
         try {
             $hairdresser_list = Hairdresser::all();
 
-            return response()->json([
-                'status' => 200,
-                'message' => 'Get data successfully',
-                'data' => $hairdresser_list
-            ]);
+            return $hairdresser_list;
         } catch (\Throwable $th) {
-            dd($th);
+            Log::error($th);
+            return response()->json(['message' => 'An error occurred while Display a listing the hairdresser.'], 500);
         }
     }
 
@@ -44,11 +52,33 @@ class HairdresserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     *
+     * @OA\Post(
+     *   path="/api/v1/hairdresser",
+     *   summary="Create Hairdresser",
+     *   operationId="createHairdresser",
+     *   tags={"Hairdresser"},
+     *   @OA\RequestBody(
+     *     required=true,
+     *     description="Create Hairdresser",
+     *     @OA\JsonContent(
+     *       required={"hairdresser_name","hairdresser_phone","hairdresser_email","hairdresser_images","hairdresser_status"},
+     *       @OA\Property(property="hairdresser_name", type="string", example="Nguyen Van A"),
+     *       @OA\Property(property="hairdresser_phone", type="string", example="0123456789"),
+     *       @OA\Property(property="hairdresser_email", type="string", example="example@email.com"),
+     *       @OA\Property(property="hairdresser_images", type="string", format="binary", example=""),
+     *       @OA\Property(property="hairdresser_status", type="integer", format="int64", example="1"),
+     *     ),
+     *   ),
+     *   @OA\Response(response=200, description="successful operation"),
+     *   @OA\Response(response=422, description="Invalid input"),
+     *   @OA\Response(response=500, description="An error occurred while creating the Hairdresser.")
+     * )
      */
     public function store(Request $request)
     {
         try {
-            $request->validate([
+            $validatedData = $request->validate([
                 'hairdresser_name' => 'required',
                 'hairdresser_phone' => 'required',
                 'hairdresser_email' => 'required',
@@ -57,32 +87,42 @@ class HairdresserController extends Controller
             ]);
 
             $hairdresser = new Hairdresser();
-            $hairdresser->hairdresser_name = $request->hairdresser_name;
-            $hairdresser->hairdresser_phone = $request->hairdresser_phone;
-            $hairdresser->hairdresser_email = $request->hairdresser_email;
-            $hairdresser->hairdresser_status = $request->hairdresser_status;
+            $hairdresser->hairdresser_name = $validatedData['hairdresser_name'];
+            $hairdresser->hairdresser_phone = $validatedData['hairdresser_phone'];
+            $hairdresser->hairdresser_email = $validatedData['hairdresser_email'];
+            $hairdresser->hairdresser_status = $validatedData['hairdresser_status'];
             $hairdresser->created_at = Carbon::now('Asia/Ho_Chi_Minh');
 
             $get_image = $request->file('hairdresser_images');
+
             if ($get_image) {
-                $get_name_image = $get_image->getClientOriginalName();
-                $name_image = pathinfo($get_name_image, PATHINFO_FILENAME);
-                $new_image = $name_image . '_' . time() . '.' . $get_image->getClientOriginalExtension();
-                $get_image->move(public_path('images/logo/'), $new_image);
+                if ($get_image->isValid()) {
+                    $original_name = $get_image->getClientOriginalName();
+                    $file_extension = $get_image->getClientOriginalExtension();
 
-                if ($hairdresser->hairdresser_images) {
-                    unlink(public_path('images/logo/') . $hairdresser->hairdresser_images);
+                    $random_suffix = rand(1000, 9999);
+
+                    $new_image = pathinfo($original_name, PATHINFO_FILENAME) . '_' . $random_suffix . '.' . $file_extension;
+
+                    $get_image->storeAs('images/hairdresser', $new_image, 'public');
+
+                    if ($hairdresser->hairdresser_images) {
+                        Storage::disk('public')->delete($hairdresser->hairdresser_images);
+                    }
+
+                    $hairdresser->hairdresser_images = $new_image;
+                } else {
+                    return response()->json(['message' => 'Invalid file.'], 422);
                 }
-
-                $hairdresser->hairdresser_images = $new_image;
             }
 
             $hairdresser->save();
-            toastr()->success('Tạo thợ cắt tóc thành công.', 'Thành công');
 
-            return redirect()->back();
+            return response()->json(['message' => 'Hairdresser created successfully', 'hairdresser' => $hairdresser], 200);
         } catch (\Throwable $th) {
-            dd($th);
+            Log::error($th);
+
+            return response()->json(['message' => 'An error occurred while creating the Hairdresser.'], 500);
         }
     }
 
@@ -115,11 +155,43 @@ class HairdresserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     *
+     * @OA\Patch(
+     *   path="/api/v1/hairdresser/{id}",
+     *   summary="Update Hairdresser",
+     *   operationId="updateHairdresser",
+     *   tags={"Hairdresser"},
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     description="ID of hairdresser that needs to be updated",
+     *     required=true,
+     *     @OA\Schema(
+     *       type="integer",
+     *       format="int64"
+     *     )
+     *   ),
+     *   @OA\RequestBody(
+     *     required=true,
+     *     description="Update Hairdresser",
+     *     @OA\JsonContent(
+     *       required={"hairdresser_name","hairdresser_phone","hairdresser_email","hairdresser_images","hairdresser_status"},
+     *       @OA\Property(property="hairdresser_name", type="string", example="Nguyen Van A"),
+     *       @OA\Property(property="hairdresser_phone", type="string", example="0123456789"),
+     *       @OA\Property(property="hairdresser_email", type="string", example="example@email.com"),
+     *       @OA\Property(property="hairdresser_images", type="string", format="binary", example=""),
+     *       @OA\Property(property="hairdresser_status", type="integer", format="int64", example="1"),
+     *     ),
+     *   ),
+     *   @OA\Response(response=200, description="Successful operation"),
+     *   @OA\Response(response=422, description="Invalid input"),
+     *   @OA\Response(response=500, description="An error occurred while updating the hairdresser.")
+     * )
      */
     public function update(Request $request, $id)
     {
         try {
-            $request->validate([
+            $validatedData = $request->validate([
                 'hairdresser_name' => 'required',
                 'hairdresser_phone' => 'required',
                 'hairdresser_email' => 'required',
@@ -128,35 +200,42 @@ class HairdresserController extends Controller
             ]);
 
             $hairdresser = hairdresser::find($id);
-            if (!$hairdresser) {
-                return redirect()->route('home')->with('error', 'Không tìm thấy thợ cắt tóc.');
-            }
-
-            $hairdresser->hairdresser_name = $request->hairdresser_name;
-            $hairdresser->hairdresser_phone = $request->hairdresser_phone;
-            $hairdresser->hairdresser_email = $request->hairdresser_email;
-            $hairdresser->hairdresser_status = $request->hairdresser_status;
-            $hairdresser->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+            $hairdresser->hairdresser_name = $validatedData['hairdresser_name'];
+            $hairdresser->hairdresser_phone = $validatedData['hairdresser_phone'];
+            $hairdresser->hairdresser_email = $validatedData['hairdresser_email'];
+            $hairdresser->hairdresser_status = $validatedData['hairdresser_status'];
+            $hairdresser->created_at = Carbon::now('Asia/Ho_Chi_Minh');
 
             $get_image = $request->file('hairdresser_images');
+
             if ($get_image) {
-                $get_name_image = $get_image->getClientOriginalName();
-                $name_image = pathinfo($get_name_image, PATHINFO_FILENAME);
-                $new_image = $name_image . '_' . time() . '.' . $get_image->getClientOriginalExtension();
-                $get_image->move(public_path('images/logo/'), $new_image);
+                if ($get_image->isValid()) {
+                    $original_name = $get_image->getClientOriginalName();
+                    $file_extension = $get_image->getClientOriginalExtension();
 
-                if ($hairdresser->hairdresser_images && file_exists(public_path('images/logo/') . $hairdresser->hairdresser_images)) {
-                    unlink(public_path('images/logo/') . $hairdresser->hairdresser_images);
+                    $random_suffix = rand(1000, 9999);
+
+                    $new_image = pathinfo($original_name, PATHINFO_FILENAME) . '_' . $random_suffix . '.' . $file_extension;
+
+                    $get_image->storeAs('images/hairdresser', $new_image, 'public');
+
+                    if ($hairdresser->hairdresser_images) {
+                        Storage::disk('public')->delete($hairdresser->hairdresser_images);
+                    }
+
+                    $hairdresser->hairdresser_images = $new_image;
+                } else {
+                    return response()->json(['message' => 'Invalid file.'], 422);
                 }
-
-                $hairdresser->hairdresser_images = $new_image;
             }
 
             $hairdresser->save();
-            toastr()->success('Cập nhật thợ cắt tóc thành công.', 'Thành công');
-            return redirect()->route('home');
+
+            return response()->json(['message' => 'Hairdresser created successfully', 'hairdresser' => $hairdresser], 200);
         } catch (\Throwable $th) {
-            dd($th);
+            Log::error($th);
+
+            return response()->json(['message' => 'An error occurred while update the hairdresser.'], 500);
         }
     }
 
@@ -165,20 +244,43 @@ class HairdresserController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     *
+     * @OA\Delete(
+     *   path="/api/v1/hairdresser/{id}",
+     *   summary="Delete Hairdresser",
+     *   description="Delete Hairdresser",
+     *   operationId="deleteHairdresser",
+     *   tags={"Hairdresser"},
+     *   @OA\Parameter(
+     *     description="ID of hairdresser to return",
+     *     in="path",
+     *     name="id",
+     *     required=true,
+     *     @OA\Schema(
+     *       type="integer",
+     *       format="int64"
+     *     )
+     *   ),
+     *   @OA\Response(response=200, description="Hairdresser deleted successfully"),
+     *   @OA\Response(response=500, description="An error occurred while deleting the hairdresser.")
+     * )
      */
     public function destroy($id)
     {
         try {
             $hairdresser = Hairdresser::find($id);
-            if (!$hairdresser) {
-                return redirect()->route('home')->with('error', 'Không tìm thấy thợ cắt tóc.');
+
+            if ($hairdresser->hairdresser_images) {
+                Storage::disk('public')->delete('images/hairdresser/' . $hairdresser->hairdresser_images);
             }
 
             $hairdresser->delete();
-            toastr()->success('Xoá thợ cắt tóc thành công.', 'Thành công');
-            return redirect()->route('home');
+
+            return response()->json(['message' => 'Hairdresser deleted successfully', 'hairdresser' => $hairdresser], 200);
         } catch (\Throwable $th) {
-            dd($th);
+            Log::error($th);
+
+            return response()->json(['message' => 'An error occurred while delete the hairdresser.'], 500);
         }
     }
 }

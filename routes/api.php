@@ -25,9 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::prefix('v1')->group(function () {
-    Route::resource('service', ServiceController::class)->only(['index', 'store', 'update', 'destroy', 'edit']);
-    Route::resource('hairdresser', HairdresserController::class)->only(['index', 'store', 'update', 'destroy', 'edit']);
-    Route::resource('branch', BranchController::class)->only(['index', 'store', 'update', 'destroy', 'edit']);
-    Route::resource('information', informationController::class)->only(['index', 'show', 'update', 'edit']);
-    Route::resource('booking', BookingController::class)->only(['index', 'store', 'edit', 'destroy']);
+    Route::apiResource('service', ServiceController::class);
+    Route::apiResource('hairdresser', HairdresserController::class);
+    Route::apiResource('branch', BranchController::class);
+    Route::apiResource('information', informationController::class);
+    Route::apiResource('booking', BookingController::class);
 });

@@ -39,3 +39,7 @@ Route::prefix('v1')->group(function () {
     Route::resource('booking', BookingController::class)->only(['index', 'store', 'edit', 'destroy']);
 });
 
+//route php info()
+Route::get('/phpinfo', function () {
+    return phpinfo();
+});

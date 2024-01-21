@@ -20,9 +20,9 @@ return new class extends Migration
             $table->time('booking_times');
             $table->string('booking_days');
             $table->boolean('booking_quantity');
-            $table->integer('booking_branch');
-            $table->integer('booking_service');
-            $table->integer('booking_hairdresser');
+            $table->integer('booking_branch_id')->index();
+            $table->integer('booking_service_id')->index();
+            $table->integer('booking_hairdresser_id')->index();
             $table->longText('booking_comment');
             $table->boolean('booking_status');
             $table->timestamps();

@@ -74,7 +74,7 @@
                         <div class="row">
                             <div class="col-lg-8 col-12">
                                 <h1 class="text-white mb-lg-3 mb-4"><strong>Barber <em>Shop</em></strong></h1>
-                                <p class="text-black">{{ $information->information_title }}</p>
+                                <p class="text-black">{{ $information['information_title'] }}</p>
                                 <br>
                                 <a class="btn custom-btn custom-border-btn custom-btn-bg-white smoothscroll me-2 mb-2"
                                     href="#section_2">Về chúng tôi</a>
@@ -103,19 +103,19 @@
                                 <h2 class="mb-4">Sứ mệnh của chúng tôi</h2>
 
                                 <div class="border-bottom pb-3 mb-5">
-                                    {!! $information->information_mission !!}
+                                    {!! $information['information_mission'] !!}
                                 </div>
                             </div>
 
                             <h6 class="mb-5">Gặp gỡ các thợ cắt tóc</h6>
 
-                            @foreach ($hairdresser_list as $hairdresser)
+                            @foreach ($hairdresserStatusTrue as $hairdresser)
                                 <div class="col-lg-5 col-12 custom-block-bg-overlay-wrap me-lg-5 mb-5 mb-lg-0">
-                                    <img src="{{ asset('images/logo/' . $hairdresser->hairdresser_images) }}"
+                                    <img src="{{ asset('images/logo/' . $hairdresser['hairdresser_images']) }}"
                                         class="custom-block-bg-overlay-image img-fluid" alt="">
 
                                     <div class="team-info d-flex align-items-center flex-wrap">
-                                        <p class="mb-0">{{ $hairdresser->hairdresser_name }}</p>
+                                        <p class="mb-0">{{ $hairdresser['hairdresser_name'] }}</p>
 
                                         <ul class="social-icon ms-auto">
                                             <li class="social-icon-item">
@@ -187,22 +187,21 @@
                             <div class="col-lg-12 col-12">
                                 <h2 class="mb-5">Dịch vụ</h2>
                             </div>
-                            @foreach ($service_list as $service)
-                                <div class="col-lg-6 col-12 mb-4">
-                                    <div class="services-thumb">
-                                        <img width=""
-                                            src="{{ asset('images/logo/' . $service->service_images) }} "
-                                            class="services-image img-fluid" alt="">
+                            <div class="row">
+                                @foreach ($serviceStatusTrue as $service)
+                                    <div class="col-lg-6 col-12 mb-4">
+                                        <div class="services-thumb">
+                                            <img src="{{ asset('images/logo/' . $service['service_images']) }}"
+                                                 class="services-image img-fluid" alt="{{ $service['service_name'] }}">
 
-                                        <div class="services-info d-flex align-items-end">
-                                            <h4 class="mb-0">{{ $service->service_name }}</h4>
-
-                                            <strong
-                                                class="services-thumb-price">{{ $service->service_price }}</strong>
+                                            <div class="services-info d-flex align-items-end">
+                                                <h4 class="mb-0">{{ $service['service_name'] }}</h4>
+                                                <strong class="services-thumb-price">{{ $service['service_price'] }}</strong>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -212,8 +211,9 @@
                         <div class="row">
 
                             <div class="col-lg-10 col-12 mx-auto">
-                                <form action="{{ route('booking.store') }}" method="POST" class="custom-form booking-form"
-                                    id="bb-booking-form" role="form" enctype="multipart/form-data">
+                                <form action="{{ route('booking.store') }}" method="POST"
+                                    class="custom-form booking-form" id="bb-booking-form" role="form"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     <div class="text-center mb-5">
                                         <h2 class="mb-1">Đặt chổ ngay</h2>
@@ -241,33 +241,39 @@
                                             </div>
 
                                             <div class="col-lg-6 col-12">
-                                                <select class="form-select form-control" name="booking_branch" id="booking_branch" aria-label="Default select example">
-                                                    <option value="" selected disabled>-------Chọn chi nhánh--------</option>
-                                                    @foreach ($branch as $branch_booking)
-                                                        <option value="{{ $branch_booking->id }}">
-                                                            {{ $branch_booking->branch_name }}
+                                                <select class="form-select form-control" name="booking_branch_id"
+                                                    id="booking_branch_id" aria-label="Default select example">
+                                                    <option value="" selected disabled>-------Chọn chi
+                                                        nhánh--------</option>
+                                                    @foreach ($branchStatusTrue as $branch_booking)
+                                                        <option value="{{ $branch_booking['id'] }}">
+                                                            {{ $branch_booking['branch_name'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </div>
 
                                             <div class="col-lg-6 col-12">
-                                                <select class="form-select form-control" name="booking_service" id="booking_service" aria-label="Default select example">
-                                                    <option value="" selected disabled>-------Chọn dịch vụ--------</option>
-                                                    @foreach ($service_list as $service_booking)
-                                                        <option value="{{ $service_booking->id }}">
-                                                            {{ $service_booking->service_name }}
+                                                <select class="form-select form-control" name="booking_service_id"
+                                                    id="booking_service_id" aria-label="Default select example">
+                                                    <option value="" selected disabled>-------Chọn dịch
+                                                        vụ--------</option>
+                                                    @foreach ($serviceStatusTrue as $service_booking)
+                                                        <option value="{{ $service_booking['id'] }}">
+                                                            {{ $service_booking['service_name'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
                                             </div>
 
                                             <div class="col-lg-6 col-12">
-                                                <select class="form-select form-control" name="booking_hairdresser" id="booking_hairdresser" aria-label="Default select example">
-                                                    <option value="" selected disabled>-------Chọn thợ cắt tóc--------</option>
-                                                    @foreach ($hairdresser_list as $hairdresser_booking)
-                                                        <option value="{{ $hairdresser_booking->id }}">
-                                                            MR.{{ $hairdresser_booking->hairdresser_name }}
+                                                <select class="form-select form-control" name="booking_hairdresser_id"
+                                                    id="booking_hairdresser_id" aria-label="Default select example">
+                                                    <option value="" selected disabled>-------Chọn thợ cắt
+                                                        tóc--------</option>
+                                                    @foreach ($hairdresserStatusTrue as $hairdresser_booking)
+                                                        <option value="{{ $hairdresser_booking['id'] }}">
+                                                            MR. {{ $hairdresser_booking['hairdresser_name'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -279,15 +285,18 @@
                                             </div>
 
                                             <div class="col-lg-6 col-12">
-                                                <input type="number" min="1" name="booking_quantity" id="booking_quantity"
-                                                    class="form-control" placeholder="Số khách lượng đặt" required>
+                                                <input type="number" min="1" name="booking_quantity"
+                                                    id="booking_quantity" class="form-control"
+                                                    placeholder="Số khách lượng đặt" required>
                                             </div>
                                         </div>
 
-                                        <textarea name="booking_comment" rows="3" class="form-control" id="bb-message" placeholder="Ghi chú (Tùy chọn)"></textarea>
+                                        <textarea name="booking_comment" rows="3" class="form-control" id="bb-message"
+                                            placeholder="Ghi chú (Tùy chọn)"></textarea>
 
                                         <div class="col-lg-4 col-md-10 col-8 mx-auto">
-                                            <input type="submit" name="gui" class="form-control" value="Gửi">
+                                            <input type="submit" name="gui" class="form-control"
+                                                value="Gửi">
                                         </div>
                                     </div>
                                 </form>
@@ -307,13 +316,13 @@
 
                                         <strong>Giá bắt đầu từ {{ $minPrice }} VNĐ</strong>
                                     </div>
-                                    @foreach ($service_list as $service)
+                                    @foreach ($serviceStatusTrue as $service)
                                         <div class="price-list-thumb">
                                             <h6 class="d-flex">
-                                                {{ $service->service_name }}
+                                                {{ $service['service_name'] }}
                                                 <span class="price-list-thumb-divider"></span>
 
-                                                <strong>{{ $service->service_price }} VNĐ</strong>
+                                                <strong>{{ $service['service_price'] }} VNĐ</strong>
                                             </h6>
                                         </div>
                                     @endforeach
@@ -337,7 +346,7 @@
                             <div class="row">
 
                                 <div class="col-lg-8 col-12 mx-auto">
-                                    <h2 class="text-center">{!! $information->information_description !!}</h2>
+                                    <h2 class="text-center">{!! $information['information_description'] !!}</h2>
                                 </div>
                             </div>
                         </div>
@@ -351,15 +360,15 @@
                                     <h5 class="mb-3"><strong>Thông tin</strong> Liên lạc</h5>
 
                                     <p class="text-white d-flex mb-1">
-                                        <a href="tel: {{ $information->information_phone }}"
+                                        <a href="tel: {{ $information['information_phone'] }}"
                                             class="site-footer-link">
-                                            {{ $information->information_phone }}
+                                            {{ $information['information_phone'] }}
                                         </a>
                                     </p>
 
                                     <p class="text-white d-flex">
                                         <a href="mailto:info@yourgmail.com" class="site-footer-link">
-                                            {{ $information->information_email }}
+                                            {{ $information['information_email'] }}
                                         </a>
                                     </p>
 
@@ -397,20 +406,20 @@
                                             <i class="custom-icon bi-shop me-3"></i>
 
                                             <strong>
-                                                @if ($information->information_status == 1)
+                                                @if ($information['information_status'] == 1)
                                                     Đang mở cửa
                                                 @else
                                                     Đã đóng cửa
                                                 @endif
                                             </strong>
-                                            <span class="ms-auto">{{ $information->information_opening_time }} -
-                                                {{ $information->information_closing_time }}</span>
+                                            <span class="ms-auto">{{ $information['information_opening_time'] }} -
+                                                {{ $information['information_closing_time'] }}</span>
                                         </h6>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12 col-12 mx-auto mt-5 pt-5">
-                                    {!! $information->information_maps !!}
+                                    {!! $information['information_maps'] !!}
                                 </div>
 
                             </div>
@@ -425,12 +434,12 @@
                             <div class="col-lg-12 col-12">
                                 <h4 class="site-footer-title mb-4">Chi nhánh của chúng tôi</h4>
                             </div>
-                            @foreach ($branch as $branch)
+                            @foreach ($branchStatusTrue as $branch)
                                 <div class="col-lg-4 col-md-6 col-11">
                                     <div class="site-footer-thumb">
-                                        <strong class="mb-1">{{ $branch->branch_name }}</strong>
+                                        <strong class="mb-1">{{ $branch['branch_name'] }}</strong>
 
-                                        <p>{{ $branch->branch_address }}</p>
+                                        <p>{{ $branch['branch_address'] }}</p>
                                     </div>
                                 </div>
                             @endforeach
@@ -479,6 +488,30 @@
             <script src="{{ asset('frontend/js/click-scroll.js') }}"></script>
             <script src="{{ asset('frontend/js/custom.js') }}"></script>
         </div>
+        {{-- <script>
+            $(document).ready(function() {
+                const servicesContainer = $('#services-container');
+
+                $.get('https://barbershop.local/api/v1/service', function(services) {
+                    // Iterate through the services and append them to the container
+                    services.forEach(function(service) {
+                        const serviceHtml = `
+                            <div class="col-lg-6 col-12 mb-4">
+                                <div class="services-thumb">
+                                    <img src="images/logo/${service.service_images}" class="services-image img-fluid" alt="${service.service_name}">
+                                    <div class="services-info d-flex align-items-end">
+                                        <h4 class="mb-0">${service.service_name}</h4>
+                                        <strong class="services-thumb-price">${service.service_price}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        servicesContainer.append(serviceHtml);
+                    });
+                });
+            });
+        </script> --}}
+
 </body>
 
 </html>

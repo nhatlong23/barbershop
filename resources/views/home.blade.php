@@ -124,75 +124,9 @@
                                 <th scope="col">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($service_list as $service)
-                                <tr>
-                                    <td>{{ $service->service_name }}</td>
-                                    <td>{{ $service->service_price }}</td>
-                                    <td>{!! $service->service_description !!}</td>
-                                    <td> <img src="images/logo/{{ $service->service_images }}" height="100"
-                                            width="100">
-                                    <td>
-                                        @if ($service->service_status == 1)
-                                            Hiển thị dịch vụ
-                                        @else
-                                            Ẩn dịch vụ
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('service.edit', ['service' => $service->id]) }}"
-                                            class="btn btn-primary">Sửa</a>
-                                        <form method="post"
-                                            action="{{ route('service.destroy', ['service' => $service->id]) }}"
-                                            onsubmit="return confirm('Bạn có muốn xoá không')">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Xoá</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        <tbody id="service"></tbody>
                     </table>
                     <hr>
-                    <form method="POST" autocomplete="off" action="{{ route('service.store') }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <h1>Thêm dịch vụ</h1>
-                        <div class="from-group">
-                            <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Tên dịch vụ</label>
-                                <input type="text" name="service_name" class="form-control" id="exampleFormControlInput1"
-                                    placeholder="Cắt tóc">
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Giá dịch vụ</label>
-                                <input type="text" class="form-control" name="service_price"
-                                    id="exampleFormControlInput1" placeholder="50.000">
-                            </div>
-                            <div class="mb-3">
-                                <label for="validationTextarea" class="form-label">Mô tả dịch vụ</label>
-                                <textarea class="form-control" name="service_description" id="editor" placeholder="Nhập mô tả dịch vụ"></textarea>
-                            </div>
-                            <div class="picture-container hight">
-                                <div class="picture">
-                                    <img src="{{ $service->service_images }}" class="picture-src"
-                                        id="wizardPicturePreview" title="" />
-                                    <input type="file" name="service_images" id="wizard-picture" aria-invalid="false"
-                                        class="valid" accept="image/*" />
-                                </div>
-                                <h5>Chọn hình ảnh</h5>
-                            </div>
-                            <div class="mb-3">
-                                <label for="openingHoursSelect" class="form-label">Trạng thái dịch vụ:</label>
-                                <select class="form-select" name="service_status" id="openingHoursSelect">
-                                    <option value="1">Hiển thị dịch vụ</option>
-                                    <option value="0">Ẩn dịch vụ</option>
-                                </select>
-                            </div>
-                            <input type="submit" name="themdichvu" class="btn btn-primary" value="Thêm">
-                        </div>
-                    </form>
                 </div>
                 {{-- Content for Thợ tóc --}}
                 <div id="thotoc-content" class="content-section">
@@ -208,37 +142,9 @@
                                 <th scope="col">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($hairdresser_list as $hairdresser)
-                                <tr>
-                                    <td>{{ $hairdresser->hairdresser_name }}</td>
-                                    <td>{{ $hairdresser->hairdresser_phone }}</td>
-                                    <td>{{ $hairdresser->hairdresser_email }}</td>
-                                    <td> <img src="images/logo/{{ $hairdresser->hairdresser_images }}" height="100"
-                                            width="100">
-                                    <td>
-                                        @if ($hairdresser->hairdresser_status == 1)
-                                            Hiển thị thợ cắt tóc
-                                        @else
-                                            Ẩn thợ cắt tóc
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('hairdresser.edit', ['hairdresser' => $hairdresser->id]) }}"
-                                            class="btn btn-primary">Sửa</a>
-                                        <form method="post"
-                                            action="{{ route('hairdresser.destroy', ['hairdresser' => $hairdresser->id]) }}"
-                                            onsubmit="return confirm('Bạn có muốn xoá thợ này không')">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Xoá</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        <tbody id="hairdresser"></tbody>
                     </table>
-                    <hr>
+                    {{-- <hr>
                     <form method="post" action="{{ route('hairdresser.store') }}" autocomplete="off"
                         enctype="multipart/form-data">
                         @csrf
@@ -274,7 +180,7 @@
                             </div>
                             <input type="submit" name="themthocattoc" class="btn btn-primary" value="Thêm">
                         </div>
-                    </form>
+                    </form> --}}
 
                 </div>
                 {{-- Content for Chi nhánh --}}
@@ -287,32 +193,13 @@
                                 <th scope="col">Số điện thoại chi nhánh</th>
                                 <th scope="col">Email chi nhánh</th>
                                 <th scope="col">Địa chỉ chi nhánh</th>
+                                <th scope="col">Trạng thái</th>
                                 <th scope="col">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($branch_list as $branch)
-                                <tr>
-                                    <td>{{ $branch->branch_name }}</td>
-                                    <td>{{ $branch->branch_phone }}</td>
-                                    <td>{{ $branch->branch_email }}</td>
-                                    <td>{{ $branch->branch_address }}</td>
-                                    <td>
-                                        <a href="{{ route('branch.edit', ['branch' => $branch->id]) }}"
-                                            class="btn btn-primary">Sửa</a>
-                                        <form method="post"
-                                            action="{{ route('branch.destroy', ['branch' => $branch->id]) }}"
-                                            onsubmit="return confirm('Bạn có muốn xoá chi nhánh này không')">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Xoá</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        <tbody id="branch"></tbody>
                     </table>
-                    <hr>
+                    {{-- <hr>
                     <form method="post" action="{{ route('branch.store') }}" autocomplete="off"
                         enctype="multipart/form-data">
                         @csrf
@@ -349,7 +236,7 @@
                             </div>
                             <input type="submit" name="themchinhanh" class="btn btn-primary" value="Thêm">
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
                 {{-- Content for Thông tin trang web --}}
                 <div id="info-content" class="content-section">
@@ -371,34 +258,7 @@
                                 <th scope="col">Thao tác</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($information_list as $information)
-                                <tr>
-                                    <td>{{ $information->information_name }}</td>
-                                    <td>{{ $information->information_title }}</td>
-                                    <td>{{ $information->information_phone }}</td>
-                                    <td>{{ $information->information_email }}</td>
-                                    <td>
-                                        @if ($information->information_status == 1)
-                                            Mở cửa
-                                        @else
-                                            Khoá cửa
-                                        @endif
-                                    </td>
-                                    <td>{{ $information->information_opening_time }}</td>
-                                    <td>{{ $information->information_closing_time }}</td>
-                                    <td> <img src="images/logo/{{ $information->information_images }}" height="100"
-                                            width="100">
-                                    <td>{!! $information->information_description !!}</td>
-                                    <td>{!! $information->information_mission !!}</td>
-                                    <td>{!! $information->information_maps !!}</td>
-                                    <td>
-                                        <a href="{{ route('information.edit', ['information' => $information->id]) }}"
-                                            class="btn btn-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        <tbody id="information"></tbody>
                     </table>
                 </div>
             </div>
@@ -412,5 +272,115 @@
 
             document.getElementById(sectionId + '-content').classList.add('active-content');
         }
+    </script>
+    <script type="module">
+        const serviceElement = document.getElementById('service');
+
+        window.axios.get('/api/v1/service')
+            .then(response => {
+                const services = response.data;
+
+                services.forEach((service, index) => {
+                    const row = document.createElement('tr');
+                    const serviceStatus = service.service_status == 1 ? 'Hiển thị dịch vụ' : 'Ẩn dịch vụ';
+                    row.innerHTML = `
+                        <td>${service.service_name}</td>
+                        <td>${service.service_price}</td>
+                        <td>${service.service_description}</td>
+                        <td><img src="images/service/${service.service_images}" height="100" width="100"></td>
+                        <td>${serviceStatus}</td>
+                        <td>
+                            <a href="v1/service/${service.id}/edit/" class="btn btn-primary">Sửa</a>
+                            <form method="post" action="v1/service/${service.id}" onsubmit="return confirm('Bạn có muốn xoá không')">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Xoá</button>
+                            </form>
+                        </td>
+                    `;
+                    serviceElement.appendChild(row);
+                });
+            });
+    </script>
+
+    <script type="module">
+        const serviceElement = document.getElementById('hairdresser');
+
+        window.axios.get('/api/v1/hairdresser')
+            .then(response => {
+                const hairdresser = response.data;
+                const serviceStatus = hairdresser.hairdresser_status == 1 ? 'Hiển thị thợ cắt tóc' : 'Ẩn thợ cắt tóc';
+
+                hairdresser.forEach((hairdresser, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${hairdresser.hairdresser_name}</td>
+                        <td>${hairdresser.hairdresser_phone}</td>
+                        <td>${hairdresser.hairdresser_email}</td>
+                        <td><img src="images/hairdresser/${hairdresser.hairdresser_images}" height="100" width="100"></td>
+                        <td>${serviceStatus}</td>
+                        <td>
+                            <a href="v1/hairdresser/${hairdresser.id}/edit/" class="btn btn-primary">Sửa</a>
+                        </td>
+                    `;
+                    serviceElement.appendChild(row);
+                });
+            });
+    </script>
+
+    <script type="module">
+        const serviceElement = document.getElementById('branch');
+
+        window.axios.get('/api/v1/branch')
+            .then(response => {
+                const branch = response.data;
+                const branchStatus = branch.branch_status == 1 ? 'Hiển thị chi nhánh' : 'Ẩn chi nhánh';
+
+                branch.forEach((branch, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${branch.branch_name}</td>
+                        <td>${branch.branch_phone}</td>
+                        <td>${branch.branch_email}</td>
+                        <td>${branch.branch_address}</td>
+                        <td>${branchStatus}</td>
+                        <td>
+                            <a href="v1/branch/${branch.id}/edit/" class="btn btn-primary">Sửa</a>
+                        </td>
+                    `;
+                    serviceElement.appendChild(row);
+                });
+            });
+    </script>
+
+    <script type="module">
+        const serviceElement = document.getElementById('information');
+
+        window.axios.get('/api/v1/information')
+            .then(response => {
+                const information = response.data;
+                const informationStatus = information.information_status == 1 ? 'Hiển thị cửa hàng' : 'Ẩn cửa hàng';
+
+                information.forEach((information, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${information.information_name}</td>
+                        <td>${information.information_title}</td>
+                        <td>${information.information_phone}</td>
+                        <td>${information.information_email}</td>
+                        <td>${informationStatus}</td>
+                        <td>${information.information_opening_time}</td>
+                        <td>${information.information_closing_time}</td>
+                        <td><img src="images/information/${information.information_images}" height="100" width="100"></td>
+                        <td>${information.information_description}</td>
+                        <td>${information.information_mission}</td>
+                        <td>${information.information_maps}</td>
+                        <td>
+                            <a href="v1/information/${information.id}/edit/" class="btn btn-primary">Sửa</a>
+                        </td>
+                    `;
+                    serviceElement.appendChild(row);
+                });
+            });
     </script>
 @endsection

@@ -1,0 +1,710 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Service",
+        "description": "API by for longnguyen",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/branch": {
+            "get": {
+                "tags": [
+                    "Branch"
+                ],
+                "summary": "Get List Branch",
+                "description": "Display a listing of the resource.",
+                "operationId": "getBranches",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "500": {
+                        "description": "An error occurred while Display a listing the branch."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Branch"
+                ],
+                "summary": "Create Branch",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "createBranch",
+                "requestBody": {
+                    "description": "Create Branch",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "branch_name",
+                                    "branch_phone",
+                                    "branch_email",
+                                    "branch_address",
+                                    "branch_status"
+                                ],
+                                "properties": {
+                                    "branch_name": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Branch 1"
+                                    },
+                                    "branch_phone": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "0123456789"
+                                    },
+                                    "branch_email": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "example@example.com"
+                                    },
+                                    "branch_address": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Address 1"
+                                    },
+                                    "branch_status": {
+                                        "type": "integer",
+                                        "format": "int",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "An error occurred while creating the Branch."
+                    }
+                }
+            }
+        },
+        "/api/v1/branch/{id}": {
+            "delete": {
+                "tags": [
+                    "Branch"
+                ],
+                "summary": "Delete Branch",
+                "description": "Delete Branch",
+                "operationId": "deleteBranch",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of branch to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Branch deleted successfully"
+                    },
+                    "500": {
+                        "description": "An error occurred while deleting the Branch."
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Branch"
+                ],
+                "summary": "Update Branch",
+                "description": "Update Branch",
+                "operationId": "updateBranch",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of branch to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update Branch",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "branch_name",
+                                    "branch_phone",
+                                    "branch_email",
+                                    "branch_address",
+                                    "branch_status"
+                                ],
+                                "properties": {
+                                    "branch_name": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Branch 1 updated"
+                                    },
+                                    "branch_phone": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "01234567899"
+                                    },
+                                    "branch_email": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "exampleupdate@example.com"
+                                    },
+                                    "branch_address": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Address 1 updated"
+                                    },
+                                    "branch_status": {
+                                        "type": "integer",
+                                        "format": "int",
+                                        "example": "0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "An error occurred while updating the Branch."
+                    }
+                }
+            }
+        },
+        "/api/v1/hairdresser": {
+            "get": {
+                "tags": [
+                    "Hairdresser"
+                ],
+                "summary": "Get List Hairdresser",
+                "description": "Display a listing of the resource.",
+                "operationId": "getHairdressers",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "500": {
+                        "description": "An error occurred while Display a listing the hairdresser."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hairdresser"
+                ],
+                "summary": "Create Hairdresser",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "createHairdresser",
+                "requestBody": {
+                    "description": "Create Hairdresser",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "hairdresser_name",
+                                    "hairdresser_phone",
+                                    "hairdresser_email",
+                                    "hairdresser_images",
+                                    "hairdresser_status"
+                                ],
+                                "properties": {
+                                    "hairdresser_name": {
+                                        "type": "string",
+                                        "example": "Nguyen Van A"
+                                    },
+                                    "hairdresser_phone": {
+                                        "type": "string",
+                                        "example": "0123456789"
+                                    },
+                                    "hairdresser_email": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "hairdresser_images": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "example": ""
+                                    },
+                                    "hairdresser_status": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "422": {
+                        "description": "Invalid input"
+                    },
+                    "500": {
+                        "description": "An error occurred while creating the Hairdresser."
+                    }
+                }
+            }
+        },
+        "/api/v1/hairdresser/{id}": {
+            "delete": {
+                "tags": [
+                    "Hairdresser"
+                ],
+                "summary": "Delete Hairdresser",
+                "description": "Delete Hairdresser",
+                "operationId": "deleteHairdresser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of hairdresser to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Hairdresser deleted successfully"
+                    },
+                    "500": {
+                        "description": "An error occurred while deleting the hairdresser."
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Hairdresser"
+                ],
+                "summary": "Update Hairdresser",
+                "description": "Update the specified resource in storage.",
+                "operationId": "updateHairdresser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of hairdresser that needs to be updated",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update Hairdresser",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "hairdresser_name",
+                                    "hairdresser_phone",
+                                    "hairdresser_email",
+                                    "hairdresser_images",
+                                    "hairdresser_status"
+                                ],
+                                "properties": {
+                                    "hairdresser_name": {
+                                        "type": "string",
+                                        "example": "Nguyen Van A"
+                                    },
+                                    "hairdresser_phone": {
+                                        "type": "string",
+                                        "example": "0123456789"
+                                    },
+                                    "hairdresser_email": {
+                                        "type": "string",
+                                        "example": "example@email.com"
+                                    },
+                                    "hairdresser_images": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "example": ""
+                                    },
+                                    "hairdresser_status": {
+                                        "type": "integer",
+                                        "format": "int64",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "422": {
+                        "description": "Invalid input"
+                    },
+                    "500": {
+                        "description": "An error occurred while updating the hairdresser."
+                    }
+                }
+            }
+        },
+        "/api/v1/information": {
+            "get": {
+                "tags": [
+                    "Information"
+                ],
+                "summary": "Get List Information",
+                "description": "Display a listing of the resource.",
+                "operationId": "getInformation",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "An error occurred while displaying a listing of the information."
+                    }
+                }
+            }
+        },
+        "/api/v1/information/{id}": {
+            "get": {
+                "tags": [
+                    "Information"
+                ],
+                "summary": "Get Information by ID",
+                "description": "Display the specified resource.",
+                "operationId": "getInformationById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of information to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Information not found"
+                    },
+                    "500": {
+                        "description": "An error occurred while displaying the information."
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Information"
+                ],
+                "summary": "Update Information",
+                "description": "Update Information",
+                "operationId": "updateInformation",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of information to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update Information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "information_name",
+                                    "information_title",
+                                    "information_phone",
+                                    "information_email",
+                                    "information_status",
+                                    "information_opening_time",
+                                    "information_closing_time",
+                                    "information_mission",
+                                    "information_description",
+                                    "information_maps"
+                                ],
+                                "properties": {
+                                    "information_name": {
+                                        "type": "string",
+                                        "example": "Barbershop"
+                                    },
+                                    "information_title": {
+                                        "type": "string",
+                                        "example": "Barbershop"
+                                    },
+                                    "information_phone": {
+                                        "type": "string",
+                                        "example": "01234567899"
+                                    },
+                                    "information_email": {
+                                        "type": "string",
+                                        "example": ""
+                                    },
+                                    "information_images": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "example": ""
+                                    },
+                                    "information_status": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "information_opening_time": {
+                                        "type": "string",
+                                        "example": "08:00:00"
+                                    },
+                                    "information_closing_time": {
+                                        "type": "string",
+                                        "example": "17:00:00"
+                                    },
+                                    "information_mission": {
+                                        "type": "string",
+                                        "example": "Barbershop"
+                                    },
+                                    "information_description": {
+                                        "type": "string",
+                                        "example": "Barbershop"
+                                    },
+                                    "information_maps": {
+                                        "type": "string",
+                                        "example": "Barbershop"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Information not found"
+                    },
+                    "422": {
+                        "description": "Invalid file."
+                    },
+                    "500": {
+                        "description": "An error occurred while updating the information."
+                    }
+                }
+            }
+        },
+        "/api/v1/service": {
+            "get": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Get List Service",
+                "description": "Display a listing of the resource.",
+                "operationId": "getServices",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "500": {
+                        "description": "An error occurred while Display a listing the service."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Create Service",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "storeService",
+                "requestBody": {
+                    "description": "Create Service",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "service_name",
+                                    "service_description",
+                                    "service_price",
+                                    "service_status"
+                                ],
+                                "properties": {
+                                    "service_name": {
+                                        "type": "string",
+                                        "example": "Service Name"
+                                    },
+                                    "service_description": {
+                                        "type": "string",
+                                        "example": "Service Description"
+                                    },
+                                    "service_price": {
+                                        "type": "number",
+                                        "example": "100000"
+                                    },
+                                    "service_images": {
+                                        "type": "file",
+                                        "example": ""
+                                    },
+                                    "service_status": {
+                                        "type": "number",
+                                        "example": "0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "422": {
+                        "description": "Invalid file."
+                    },
+                    "500": {
+                        "description": "An error occurred while creating the service."
+                    }
+                }
+            }
+        },
+        "/api/v1/service/{id}": {
+            "delete": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Delete Service",
+                "operationId": "destroyService",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of service to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    },
+                    "500": {
+                        "description": "An error occurred while deleting the service."
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Service"
+                ],
+                "summary": "Update Service",
+                "description": "Update Service by ID",
+                "operationId": "updateService",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of service to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update Service",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "service_name",
+                                    "service_description",
+                                    "service_images",
+                                    "service_status"
+                                ],
+                                "properties": {
+                                    "service_name": {
+                                        "type": "string",
+                                        "example": "Service Name"
+                                    },
+                                    "service_description": {
+                                        "type": "string",
+                                        "example": "Service Description"
+                                    },
+                                    "service_price": {
+                                        "type": "number",
+                                        "example": "20000"
+                                    },
+                                    "service_images": {
+                                        "type": "file",
+                                        "example": "Service Images"
+                                    },
+                                    "service_status": {
+                                        "type": "number",
+                                        "example": "0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Service not found"
+                    },
+                    "422": {
+                        "description": "Invalid file."
+                    },
+                    "500": {
+                        "description": "An error occurred while updating the service."
+                    }
+                }
+            }
+        }
+    }
+}

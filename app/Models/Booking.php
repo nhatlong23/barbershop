@@ -16,9 +16,9 @@ class Booking extends Model
         'booking_times',
         'booking_days',
         'booking_quantity',
-        'booking_branch',
-        'booking_service',
-        'booking_hairdresser',
+        'booking_branch_id',
+        'booking_service_id',
+        'booking_hairdresser_id',
         'booking_comment',
         'booking_status',
     ];
@@ -27,16 +27,16 @@ class Booking extends Model
 
     public function service()
     {
-        return $this->belongsTo(Service::class, 'booking_service');
+        return $this->belongsTo(Service::class, 'booking_service_id');
     }
 
     public function hairdresser()
     {
-        return $this->belongsTo(Hairdresser::class, 'booking_hairdresser');
+        return $this->belongsTo(Hairdresser::class, 'booking_hairdresser_id');
     }
 
     public function branch()
     {
-        return $this->belongsTo(Branch::class, 'booking_branch');
+        return $this->belongsTo(Branch::class, 'booking_branch_id');
     }
 }

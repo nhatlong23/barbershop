@@ -28,11 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $service_list = Service::all();
-        $hairdresser_list = Hairdresser::all();
-        $information_list = Information::all();
-        $branch_list = Branch::all();
         $booking_list = Booking::orderBy('id', 'desc')->take(10)->get();
-        return view('home', compact('service_list', 'hairdresser_list', 'information_list', 'branch_list', 'booking_list'));
+        return view('home', compact('booking_list'));
     }
 }

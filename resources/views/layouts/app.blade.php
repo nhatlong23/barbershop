@@ -130,6 +130,17 @@
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Thông báo
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <span class="dropdown-item">...</span>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
@@ -158,6 +169,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
     <script src="{{ asset('js/simple.money.format.js') }}"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('.money').simpleMoneyFormat();
@@ -187,6 +199,18 @@
             }
         }
     </script>
+    {{-- <script>
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('97f751c75ee49105624b', {
+            cluster: 'ap1'
+        });
+
+        var channel = pusher.subscribe('notify-channel');
+        channel.bind('booking-event', function(data) {
+            alert(JSON.stringify(data));
+        });
+    </script> --}}
 </body>
 
 </html>

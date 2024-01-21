@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use App\Events\BookingPusherEvent;
 
 class BookingController extends Controller
 {
@@ -52,9 +53,9 @@ class BookingController extends Controller
             $booking->booking_phone = $request->booking_phone;
             $booking->booking_times = $request->booking_times;
             $booking->booking_days = $request->booking_days;
-            $booking->booking_service = $request->booking_service;
-            $booking->booking_branch = $request->booking_branch;
-            $booking->booking_hairdresser = $request->booking_hairdresser;
+            $booking->booking_service_id = $request->booking_service_id;
+            $booking->booking_branch_id = $request->booking_branch_id;
+            $booking->booking_hairdresser_id = $request->booking_hairdresser_id;
             $booking->booking_quantity = $request->booking_quantity;
             $booking->booking_comment = $request->booking_comment;
             $booking->booking_status = 1;
